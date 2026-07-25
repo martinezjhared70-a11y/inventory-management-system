@@ -1,16 +1,15 @@
 from database import Database
+from excel_export import ExcelExport
 def main():
     database = Database()
+    exporter = ExcelExport()
     database.connect()
-    products = database.search_products(
-        "Laptop"
-    )
+    products = database.get_products()
+    exporter.export(products)
+    database.close()
     print()
     print("=" * 70)
-    print("PRODUCTS")
+    print("Excel report created sucessfully!")
     print("=" * 70)
-    for product in products:
-        print(product)
-    database.close()
 if __name__=="__main__":
     main()
