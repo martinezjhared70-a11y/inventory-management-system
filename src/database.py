@@ -73,6 +73,20 @@ class Database:
             )
         )
         self.connection.commit()
+    def delete_product(
+            self,
+            product_id
+    ):
+        self.cursor.execute(
+            """
+            DELETE FROM products
+            WHERE id = ?
+            """,
+            (
+                product_id,
+            )
+        )
+        self.connection.commit()
     def get_products(self):
         self.cursor.execute("""
             SELECT

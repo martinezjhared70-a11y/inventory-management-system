@@ -2,12 +2,8 @@ from database import Database
 def main():
     database = Database()
     database.connect()
-    database.update_product(
-        product_id=1,
-        name="Laptop HP",
-        category="Electronics",
-        price=4200,
-        stock=20
+    database.delete_product(
+        product_id=2
     )
     products = database.get_products()
     print()
