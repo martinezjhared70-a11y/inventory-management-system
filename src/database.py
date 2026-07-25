@@ -46,6 +46,33 @@ class Database:
         ))
     
         self.connection.commit()
+    def update_product(
+            self,
+            product_id,
+            name,
+            category,
+            price,
+            stock
+    ):
+        self.cursor.execute(
+            """
+            UPDATE products
+            SET
+                name = ?,
+                category = ?,
+                price = ?,
+                stock = ?
+            WHERE id = ?
+            """,
+            (
+                name,
+                category,
+                price,
+                stock,
+                product_id
+            )
+        )
+        self.connection.commit()
     def get_products(self):
         self.cursor.execute("""
             SELECT
