@@ -100,6 +100,32 @@ class Database:
             ORDER BY id
         """)
         return self.cursor.fetchall()
+    def search_products(
+        self,
+        keyword
+    ):
+        self.cursor.execute(
+            """
+            SELECT
+                id,
+                name,
+                category,
+                price,
+                stock,
+                created_at
+            FROM products
+            WHERE
+                name LIKE ?
+                OR category LIKE ?
+            ORDER BY id
+            """,
+            (
+                f"%{keyword}%",
+                f"%{keyword}%"
+            )
+        )
+
+        return self.cursor.fetchall()
     def close(self):
         if self.connection:
             self.connection.close()
