@@ -1,15 +1,19 @@
-from database import Database
-from excel_export import ExcelExport
+from repository import ProductRepository
 def main():
-    database = Database()
-    exporter = ExcelExport()
-    database.connect()
-    products = database.get_products()
-    exporter.export(products)
-    database.close()
+    repository = ProductRepository()
+    repository.add_product(
+
+        "Mouse Logitech",
+        "Accessories",
+        120,
+        40
+    )
+    products = repository.get_all_products()
     print()
     print("=" * 70)
-    print("Excel report created sucessfully!")
+    print("PRODUCTS")
     print("=" * 70)
+    for product in products:
+        print(product)
 if __name__=="__main__":
     main()
