@@ -46,6 +46,19 @@ class Database:
         ))
     
         self.connection.commit()
+    def get_products(self):
+        self.cursor.execute("""
+            SELECT
+                id,
+                name,
+                category,
+                price,
+                stock,
+                created_at
+            FROM products
+            ORDER BY id
+        """)
+        return self.cursor.fetchall()
     def close(self):
-        if self.connect:
+        if self.connection:
             self.connection.close()
