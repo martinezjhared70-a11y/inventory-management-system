@@ -1,5 +1,11 @@
 from database import Database
 from datetime import datetime
+from utils import(
+    validate_name,
+    validate_category,
+    validate_price,
+    validate_stock
+)
 class ProductRepository:
     def __init__(self):
         self.database = Database()
@@ -15,6 +21,10 @@ class ProductRepository:
             price,
             stock
     ):
+        validate_name(name)
+        validate_category(category)
+        validate_price(price)
+        validate_stock(stock)
         self.database.connect()
         self.database.insert_product(
             name,
