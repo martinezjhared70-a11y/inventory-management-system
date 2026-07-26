@@ -88,6 +88,7 @@ class Database:
         )
         self.connection.commit()
     def get_products(self):
+        from models import Product
         self.cursor.execute("""
             SELECT
                 id,
@@ -99,7 +100,20 @@ class Database:
             FROM products
             ORDER BY id
         """)
-        return self.cursor.fetchall()
+        rows = self.cursor.fetchall()
+        products = []
+        for row in rows:
+            products.append(
+                Product(
+                    id=row[0],
+                    name=row[1],
+                    category=row[2],
+                    price=row[3],
+                    stock=row[4],
+                    created_at=row[5]
+                )
+            )
+        return products
     def search_products(
         self,
         keyword
