@@ -72,3 +72,21 @@ class ProductRepository:
         products = self.database.search_products(keyword)
         self.database.close()
         return products
+    def sort_products(self, option):
+        products = self.get_all_products()
+        if option == 1:
+            return sorted(products, key=lambda product: product.name.lower())
+        elif option == 2:
+            return sorted(products, key=lambda product: product.price)
+        elif option == 3:
+            return sorted(products, key=lambda product:product.price, reverse=True)
+        elif option == 4:
+            return sorted(products, key=lambda product: product.stock)
+        elif option == 5:
+            return sorted(products,key=lambda product: product.stock, reverse=True)
+        return products
+    def get_deleted_products(self):
+        self.database.connect()
+        products = self.database.get_deleted_products()
+        self.database.close()
+        return products

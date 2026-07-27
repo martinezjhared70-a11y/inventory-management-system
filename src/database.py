@@ -8,6 +8,7 @@ class Database:
     def connect(self):
         self.connection = sqlite3.connect(DATABASE_PATH)
         self.cursor = self.connection.cursor()
+        self.create_tables()
     def create_tables(self):
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS products(
@@ -16,7 +17,8 @@ class Database:
                 category TEXT NOT NULL,
                 price REAL NOT NULL,
                 stock INTEGER NOT NULL,
-                created_at TEXT NOT NULL
+                created_at TEXT NOT NULL,
+                active INTEGER DEFAULT 1
             )
         """)
         self.connection.commit()
@@ -73,23 +75,22 @@ class Database:
             )
         )
         self.connection.commit()
-    def delete_product(
-            self,
-            product_id
-    ):
+    def delete_product(self, product_id):
         self.cursor.execute(
             """
-            DELETE FROM products
+            UPDATE products
+            SET active = 0
             WHERE id = ?
             """,
-            (
-                product_id,
-            )
+            (product_id,)
         )
         self.connection.commit()
     def get_products(self):
+
         from models import Product
-        self.cursor.execute("""
+
+        self.cursor.execute(
+            """
             SELECT
                 id,
                 name,
@@ -98,10 +99,15 @@ class Database:
                 stock,
                 created_at
             FROM products
+            WHERE active = 1
             ORDER BY id
-        """)
+            """
+        )
+
         rows = self.cursor.fetchall()
+
         products = []
+
         for row in rows:
             products.append(
                 Product(
@@ -113,6 +119,7 @@ class Database:
                     created_at=row[5]
                 )
             )
+
         return products
     def search_products(
         self,
@@ -149,6 +156,40 @@ class Database:
                     category=row[2],
                     price=[3],
                     stock=[4],
+                    created_at=row[5]
+                )
+            )
+        return products
+    def get_deleted_products(self):
+
+        from models import Product
+
+        self.cursor.execute("""
+            SELECT
+                id,
+                name,
+                category,
+                price,
+                stock,
+                created_at
+            FROM products
+            WHERE active = 0
+            ORDER BY id
+        """)
+
+        rows = self.cursor.fetchall()
+
+        products = []
+
+        for row in rows:
+
+            products.append(
+                Product(
+                    id=row[0],
+                    name=row[1],
+                    category=row[2],
+                    price=row[3],
+                    stock=row[4],
                     created_at=row[5]
                 )
             )

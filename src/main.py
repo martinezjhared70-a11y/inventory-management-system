@@ -13,6 +13,8 @@ def show_menu():
     print("5. Delete product")
     print("6. Update product")
     print("7. Search products")
+    print("8. Sort products")
+    print("9. Recycle Bin")
     print()
     return input("Option: ")
 def main():
@@ -122,6 +124,39 @@ def main():
             if not products:
                 print("No products found.")
             else:
+                for product in products:
+                    print("-" * 60)
+                    print(f"ID: {product.id}")
+                    print(f"Name: {product.name}")
+                    print(f"Category: {product.category}")
+                    print(f"Price: {product.price}")
+                    print(f"Stock: {product.stock}")
+        elif option== "8":
+            print()
+            print("1. Name (A-Z)")
+            print("2. Price (Low to High)")
+            print("3. Price (High to Low)")
+            print("4. Stock (Low to High)")
+            print("5. Stock (High to Low)")
+            order = int(input("Option: "))
+            products = repository.sort_products(order)
+            print()
+            for product in products:
+                print("-" * 60)
+                print(f"ID: {product.id}")
+                print(f"Name: {product.name}")
+                print(f"Category: {product.category}")
+                print(f"Price: {product.price}")
+                print(f"Stock: {product.stock}")
+        elif option == "9":
+            products = repository.get_deleted_products()
+            print()
+            if not products:
+                print("Recycle Bin is empty.")
+            else:
+                print("=" * 60)
+                print("RECYCLE BIN")
+                print("=" * 60)
                 for product in products:
                     print("-" * 60)
                     print(f"ID: {product.id}")
