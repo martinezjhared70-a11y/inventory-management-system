@@ -118,6 +118,7 @@ class Database:
         self,
         keyword
     ):
+        from models import Product
         self.cursor.execute(
             """
             SELECT
@@ -138,8 +139,20 @@ class Database:
                 f"%{keyword}%"
             )
         )
-
-        return self.cursor.fetchall()
+        rows = self.cursor.fetchall()
+        products = []
+        for row in rows:
+            products.append(
+                Product(
+                    id=row[0],
+                    name=row[1],
+                    category=row[2],
+                    price=[3],
+                    stock=[4],
+                    created_at=row[5]
+                )
+            )
+        return products
     def close(self):
         if self.connection:
             self.connection.close()

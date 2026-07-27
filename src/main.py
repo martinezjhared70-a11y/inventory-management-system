@@ -12,6 +12,7 @@ def show_menu():
     print("4. Dashboard")
     print("5. Delete product")
     print("6. Update product")
+    print("7. Search products")
     print()
     return input("Option: ")
 def main():
@@ -73,6 +74,7 @@ def main():
             print(f"Inventory value : {dashboard.total_inventory_value()}")
             print(f"Average price : {dashboard.average_price():.2f}")
             print(f"Categories : {dashboard.total_categories()}")
+            print(f"Average stock : {dashboard.average_stock():.2f}")
 
             expensive = dashboard.most_expensive_product()
             if expensive:
@@ -80,6 +82,17 @@ def main():
             stock = dashboard.product_with_more_stock()
             if stock:
                 print(f"Highest stock : {stock.name} ({stock.stock})")
+                print()
+                print("Products by category")
+                for category, quantity in dashboard.products_per_category().items():
+                    print(f"{category}: {quantity}")
+                print()
+                print("Inventory value by category")
+                for category, value in dashboard.inventory_value_by_category().items():
+                    print(f"{category}: ${value:.2f}")
+            cheap = dashboard.cheapest_product()
+            if cheap:
+                print(f"Cheapest product : {cheap.name} (${cheap.price})")
         elif option == "6":
             try:
                 product_id = int(input("Product ID: "))
@@ -102,6 +115,20 @@ def main():
             except Exception as error:
                 print()
                 print(f"Unexpected error: {error}")
+        elif option == "7":
+            keyword = input("Search: ")
+            products = repository.search_products(keyword)
+            print()
+            if not products:
+                print("No products found.")
+            else:
+                for product in products:
+                    print("-" * 60)
+                    print(f"ID: {product.id}")
+                    print(f"Name: {product.name}")
+                    print(f"Category: {product.category}")
+                    print(f"Price: {product.price}")
+                    print(f"Stock: {product.stock}")
         else: 
             print()
             print("Please select a valid option.")

@@ -67,3 +67,8 @@ class ProductRepository:
         logger.info(
             f"Product updated. ID: {product_id}"
         )
+    def search_products(self, keyword):
+        self.database.connect()
+        products = self.database.search_products(keyword)
+        self.database.close()
+        return products
