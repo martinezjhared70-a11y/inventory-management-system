@@ -1,4 +1,6 @@
 from repository import ProductRepository
+from inventory import InventoryDashboard
+dashboard = InventoryDashboard()
 def show_menu():
     print()
     print("=" * 50)
@@ -7,6 +9,7 @@ def show_menu():
     print("1. Add product")
     print("2. List products")
     print("3. Exit")
+    print("4. Dashboard")
     print()
     return input("Option: ")
 def main():
@@ -41,7 +44,24 @@ def main():
             print("God bye!")
 
             break
+        elif option == "4":
+            print()
+            print("=" * 70)
+            print("INVENTORY DASHBOARD")
+            print("=" * 70)
 
+            print(f"Total products : {dashboard.total_products()}")
+            print(f"Total stock : {dashboard.total_stock()}")
+            print(f"Inventory value : {dashboard.total_inventory_value()}")
+            print(f"Average price : {dashboard.average_price():.2f}")
+            print(f"Categories : {dashboard.total_categories()}")
+
+            expensive = dashboard.most_expensive_product()
+            if expensive:
+                print(f"Most expensive : {expensive.name} (${expensive.price})")
+            stock = dashboard.product_with_more_stock()
+            if stock:
+                print(f"Highest stock : {stock.name} ({stock.stock})")
         else: 
             print()
             print("Invalid option")
