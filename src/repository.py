@@ -38,3 +38,32 @@ class ProductRepository:
         )
         self.database.close()
         logger.info(f"Product added: {name}")
+    def delete_product(self, product_id):
+        self.database.connect()
+        self.database.delete_product(product_id)
+        self.database.close()
+        logger.info(f"Product deleted. ID: {product_id}")
+    def update_product(
+            self,
+            product_id,
+            name,
+            category,
+            price,
+            stock
+    ):
+        validate_name(name)
+        validate_category(category)
+        validate_price(price)
+        validate_stock(stock)
+        self.database.connect()
+        self.database.update_product(
+            product_id,
+            name,
+            category,
+            price,
+            stock
+        )
+        self.database.close()
+        logger.info(
+            f"Product updated. ID: {product_id}"
+        )

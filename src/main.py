@@ -10,6 +10,8 @@ def show_menu():
     print("2. List products")
     print("3. Exit")
     print("4. Dashboard")
+    print("5. Delete product")
+    print("6. Update product")
     print()
     return input("Option: ")
 def main():
@@ -17,18 +19,25 @@ def main():
     while True:
         option = show_menu()
         if option == "1":
-            name = input("Name: ")
-            category = input("Category: ")
-            price = float(input("Price: "))
-            stock = int(input("Stock: "))
-            repository.add_product(
-                name,
-                category,
-                price,
-                stock
-            )
-            print()
-            print("Product added successfully.")
+            try:
+                name = input("Name: ")
+                category = input("Category: ")
+                price = float(input("Price: "))
+                stock = int(input("Stock: "))
+                repository.add_product(
+                    name,
+                    category,
+                    price,
+                    stock
+                )
+                print()
+                print("Product added successfully.")
+            except ValueError as error:
+                print()
+                print(f"Error: {error}")
+            except Exception as error:
+                print()
+                print(f"Unexpected error: {error}")
         elif option == "2":
             products = repository.get_all_products()
             print()
@@ -39,6 +48,15 @@ def main():
                 print(f"Category: {product.category}")
                 print(f"Price: {product.price}")
                 print(f"Stock: {product.stock}")
+        elif option == "5":
+            try:
+                product_id = int(input("Product ID: "))
+                repository.delete_product(product_id)
+                print()
+                print("Product deleted successfully.")
+            except ValueError:
+                print()
+                print("Invalid ID.")
         elif option == "3":
             print()
             print("God bye!")
@@ -62,8 +80,30 @@ def main():
             stock = dashboard.product_with_more_stock()
             if stock:
                 print(f"Highest stock : {stock.name} ({stock.stock})")
+        elif option == "6":
+            try:
+                product_id = int(input("Product ID: "))
+                name = input("New name: ")
+                category = input("New category: ")
+                price = float(input("New price: "))
+                stock = int(input("New stock: "))
+                repository.update_product(
+                    product_id,
+                    name,
+                    category,
+                    price,
+                    stock
+                )
+                print()
+                print("Product updated successfully.")
+            except ValueError as error:
+                print()
+                print(f"Error: {error}")
+            except Exception as error:
+                print()
+                print(f"Unexpected error: {error}")
         else: 
             print()
-            print("Invalid option")
+            print("Please select a valid option.")
 if __name__=="__main__":
     main()
