@@ -1,5 +1,6 @@
 from database import Database
 from datetime import datetime
+from logger_config import logger
 from utils import(
     validate_name,
     validate_category,
@@ -36,3 +37,4 @@ class ProductRepository:
             )
         )
         self.database.close()
+        logger.info(f"Product added: {name}")
